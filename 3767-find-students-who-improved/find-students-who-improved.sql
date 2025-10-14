@@ -1,13 +1,10 @@
-WITH ranking AS (
-  SELECT
+WITH Ranking AS (
+    SELECT
     student_id,
     subject,
-    FIRST_VALUE(score) OVER (PARTITION BY student_id, subject ORDER BY exam_date ASC) AS first_score,
-    LAST_VALUE(score) OVER (
-      PARTITION BY student_id, subject ORDER BY exam_date ASC
-      ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-    ) AS latest_score
-  FROM Scores
+    FIRST_VALUE(score) OVER(PARTITION BY student_id,subject ORDER BY exam_date) AS first_score,
+    FIRST_VALUE(score) OVER(PARTITION BY student_id,subject ORDER BY exam_date DESC) AS latest_score
+    FROM Scores
 )
 SELECT DISTINCT student_id, subject, first_score, latest_score
 FROM ranking
