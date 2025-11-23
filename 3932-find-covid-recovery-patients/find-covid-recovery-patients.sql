@@ -1,0 +1,2 @@
+
+select p.patient_id,p.patient_name,p.age,datediff(min(c.test_date),min(c1.test_date)) as recovery_time from covid_tests c1 inner join covid_tests c on c1.patient_id=c.patient_id and c1.test_date<c.test_date and c1.result='positive' and c.result='Negative' inner join patients p on c1.patient_id=p.patient_id group by c.patient_id order by recovery_time, p.patient_name;
